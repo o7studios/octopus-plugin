@@ -6,6 +6,23 @@
 
 - Runs on [Paper](https://papermc.io/software/paper)
 
+## Usage
+
+Add dependency to plugin:
+
+```kotlin
+dependencies {
+    compileOnly("studio.o7:octopus-plugin-api:X.Y.Z")
+}
+```
+
+Add _depend_ inside `plugin.yml`:
+
+```yaml
+depend:
+  - Octopus
+```
+
 ## Development
 
 Full development setup available as [Development Container](https://containers.dev/).
