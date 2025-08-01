@@ -1,0 +1,17 @@
+{
+  "name": "Octopus Plugin",
+  "image": "ubuntu:latest",
+  "customizations" : {
+    "jetbrains" : {
+      "backend" : "IntelliJ"
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/git" : {},
+    "ghcr.io/devcontainers/features/java:1": {
+      "version": "21.0.7",
+      "installGradle": true
+    }
+  },
+  "remoteUser": "ubuntu"
+}
