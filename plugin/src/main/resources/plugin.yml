@@ -1,0 +1,4 @@
+name: Octopus
+version: 0.0.0
+main: studio.o7.octopus.plugin.OctopusPlugin
+description: Octopus paper plugin
