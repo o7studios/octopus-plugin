@@ -1,4 +1,8 @@
 name: Octopus
 version: 0.0.0
-main: studio.o7.octopus.plugin.OctopusPlugin
 description: Octopus paper plugin
+author: o7studios
+prefix: octopus
+
+main: studio.o7.octopus.plugin.OctopusPlugin
+load: STARTUP
