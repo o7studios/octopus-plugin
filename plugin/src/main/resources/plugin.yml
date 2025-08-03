@@ -3,6 +3,7 @@ version: 0.0.0
 description: Octopus paper plugin
 author: o7studios
 prefix: octopus
+api-version: "1.21.8"
 
 main: studio.o7.octopus.plugin.OctopusPlugin
 load: STARTUP

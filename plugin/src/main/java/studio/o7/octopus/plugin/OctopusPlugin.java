@@ -5,7 +5,6 @@ import org.bukkit.event.HandlerList;
 import org.bukkit.plugin.java.JavaPlugin;
 import studio.o7.octopus.plugin.api.Octopus;
 
-@SuppressWarnings("UnstableApiUsage")
 @Getter
 public final class OctopusPlugin extends JavaPlugin implements PluginInstance {
 

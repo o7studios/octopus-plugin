@@ -3,7 +3,7 @@ package studio.o7.octopus.test.listeners;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import studio.o7.octopus.plugin.api.client.OctopusClient;
+import studio.o7.octopus.plugin.api.Octopus;
 import studio.o7.octopus.plugin.api.events.OctopusActionEvent;
 
 import java.util.ArrayList;
@@ -11,10 +11,8 @@ import java.util.List;
 
 public class OctopusListener implements Listener {
     private final List<String> keys;
-    private final OctopusClient client;
 
-    public OctopusListener(OctopusClient client) {
-        this.client = client;
+    public OctopusListener() {
         this.keys = new ArrayList<>();
     }
 
@@ -51,7 +49,7 @@ public class OctopusListener implements Listener {
         System.out.println("Subscribing to " + key);
         keys.add(key);
 
-        client.updateSubscriptions(keys);
+        Octopus.get().setSubscriptions(keys);
     }
 
     /*
@@ -63,6 +61,6 @@ public class OctopusListener implements Listener {
         System.out.println("Unsubscribing from " + key);
         keys.remove(key);
 
-        client.updateSubscriptions(keys);
+        Octopus.get().setSubscriptions(keys);
     }
 }
