@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 import studio.o7.octopus.plugin.api.Octopus;
-import studio.o7.octopus.plugin.api.client.OctopusClient;
 import studio.o7.octopus.test.command.MessageCommand;
 import studio.o7.octopus.test.listeners.OctopusListener;
 
@@ -28,19 +27,16 @@ public final class OctopusTestPlugin extends JavaPlugin {
         // Remember to depend on Octopus
         Octopus octopus = Octopus.get();
 
-        // Access the client
-        OctopusClient client = octopus.getClient();
-
         PluginManager pluginManager = Bukkit.getPluginManager();
 
         // Here is the action event (when a server emits an action)
-        pluginManager.registerEvents(new OctopusListener(client), this);
+        pluginManager.registerEvents(new OctopusListener(), this);
 
         // The action gets emitted in this command
-        getCommand("msg").setExecutor(new MessageCommand(client));
+        getCommand("msg").setExecutor(new MessageCommand());
 
         // When using subscriptions. You need to initialize it first
-        client.initializeSubscription(List.of("test"));
+        octopus.setSubscriptions(List.of("test"));
     }
 
 }

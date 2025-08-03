@@ -2,7 +2,7 @@ name: OctopusTest
 description: "A huge Minecraft library's test plugin."
 author: "o7studios"
 prefix: "octopus-test"
-api-version: 1.21
+api-version: "1.21.8"
 version: 0.0.0
 
 main: "studio.o7.octopus.test.OctopusTestPlugin"

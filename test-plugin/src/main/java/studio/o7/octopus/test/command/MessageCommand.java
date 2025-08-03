@@ -7,17 +7,11 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import studio.o7.octopus.plugin.api.client.OctopusClient;
+import studio.o7.octopus.plugin.api.Octopus;
 import studio.o7.octopus.sdk.gen.api.v1.Action;
 import studio.o7.octopus.sdk.gen.api.v1.Event;
 
 public class MessageCommand implements CommandExecutor {
-
-    private final OctopusClient client;
-
-    public MessageCommand(OctopusClient client) {
-        this.client = client;
-    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender commandSender, @NotNull Command command, @NotNull String s, @NotNull String[] strings) {
@@ -41,7 +35,7 @@ public class MessageCommand implements CommandExecutor {
 
         var event = Event.newBuilder().setKey(key).setAction(action).build();
         player.sendMessage("Sent private message to " + playerName);
-        client.emitEvent(event);
+        Octopus.get().publishEvent(event);
 
         return false;
     }
