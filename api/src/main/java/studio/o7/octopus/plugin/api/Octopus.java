@@ -41,9 +41,9 @@ public interface Octopus {
 
     /**
      * Resets list of keys that should be subscribed completely.
-     * @apiNote Also resets all subscribed/unsubscribed keys
+     * Also resets all subscribed/unsubscribed keys
      * which have been added by {@link Octopus#addSubscriptions}
-     * or removed by {@link Octopus#removeSubscriptions}
+     * or removed by {@link Octopus#removeSubscriptions}.
      */
     @ApiStatus.Experimental
     void setSubscriptions(@NonNull Collection<String> subscriptions);
