@@ -1,6 +1,7 @@
 package studio.o7.octopus.plugin.api;
 
 import lombok.NonNull;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NullMarked;
 import studio.o7.octopus.plugin.Unsafe;
@@ -44,6 +45,7 @@ public interface Octopus {
      * which have been added by {@link Octopus#addSubscriptions}
      * or removed by {@link Octopus#removeSubscriptions}
      */
+    @ApiStatus.Experimental
     void setSubscriptions(@NonNull Collection<String> subscriptions);
 
     /**
