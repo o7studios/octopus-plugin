@@ -23,6 +23,7 @@ public final class OctopusImpl implements Octopus {
     private final OctopusServiceGrpc.OctopusServiceStub stub = OctopusSDK.stub();
     private final OctopusServiceGrpc.OctopusServiceBlockingStub blockingStub = OctopusSDK.blockingStub();
 
+    private final Logger logger;
     private final OctopusSubscriptions subscriptions;
 
     private String identifier;
@@ -31,19 +32,30 @@ public final class OctopusImpl implements Octopus {
 
     public OctopusImpl(Plugin plugin) {
         this.plugin = plugin;
-        subscriptions = new OctopusSubscriptions(plugin, stub);
+        logger = plugin.getSLF4JLogger();
+        subscriptions = new OctopusSubscriptions(plugin, logger, stub);
     }
 
     @Override
     public boolean publishEvent(@NonNull Event event) {
-        var publishEventResponse = blockingStub.publishEvent(event);
-        plugin.getSLF4JLogger().info("Published event on key {}", event.getKey());
-        return publishEventResponse.getSuccess();
+        try {
+            var publishEventResponse = blockingStub.publishEvent(event);
+            logger.info("Published event on key {}", event.getKey());
+            return publishEventResponse.getSuccess();
+        } catch (Exception e) {
+            logger.error("Failed to publish event on key {}", event.getKey(), e);
+            return false;
+        }
     }
 
     @Override
     public @NotNull List<Entry> getEntry(@NonNull String key) {
-        return blockingStub.getEntry(EntryRequest.newBuilder().setKey(key).build()).getEntriesList();
+        try {
+            return blockingStub.getEntry(EntryRequest.newBuilder().setKey(key).build()).getEntriesList();
+        } catch (Exception e) {
+            logger.error("Failed to retrieve entry on key {}", key, e);
+            return Collections.emptyList();
+        }
     }
 
     @Override

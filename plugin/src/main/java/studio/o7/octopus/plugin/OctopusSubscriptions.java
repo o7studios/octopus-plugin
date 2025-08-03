@@ -20,30 +20,34 @@ import java.util.Collection;
 @RequiredArgsConstructor
 public final class OctopusSubscriptions {
     private final Plugin plugin;
+    private final Logger logger;
     private final OctopusServiceGrpc.OctopusServiceStub stub;
 
     private StreamObserver<EventSubscriptionUpdate> subscriptionObserver;
 
     private synchronized void init() {
-        var logger = plugin.getSLF4JLogger();
         logger.info("Initializing event subscription observer");
         subscriptionObserver = stub.subscription(new Observer(logger));
     }
 
     public void updateSubscriptions(@NonNull Collection<String> subscriptions) {
-        if (subscriptionObserver == null) {
-            init();
-            updateSubscriptions(subscriptions);
-            return;
+        try {
+            if (subscriptionObserver == null) {
+                init();
+                updateSubscriptions(subscriptions);
+                return;
+            }
+
+            var update = EventSubscriptionUpdate.newBuilder()
+                    .setIdentifier(Octopus.get().getIdentifier())
+                    .addAllKeys(subscriptions)
+                    .build();
+
+            subscriptionObserver.onNext(update);
+            logger.debug("Updated event subscriptions");
+        } catch (Exception exception) {
+            logger.error("Failed to update event subscriptions", exception);
         }
-
-        var update = EventSubscriptionUpdate.newBuilder()
-                .setIdentifier(Octopus.get().getIdentifier())
-                .addAllKeys(subscriptions)
-                .build();
-
-        subscriptionObserver.onNext(update);
-        plugin.getSLF4JLogger().debug("Updated event subscriptions");
     }
 
     @RequiredArgsConstructor
