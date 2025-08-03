@@ -14,6 +14,7 @@ import studio.o7.octopus.sdk.gen.api.v1.Event;
 import studio.o7.octopus.sdk.gen.api.v1.OctopusServiceGrpc;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public final class OctopusImpl implements Octopus {
@@ -26,7 +27,7 @@ public final class OctopusImpl implements Octopus {
 
     private String identifier;
 
-    private final Collection<String> subscriptionList = new ObjectArraySet<>();
+    private final Collection<String> subscriptionList = Collections.synchronizedSet(new ObjectArraySet<>());
 
     public OctopusImpl(Plugin plugin) {
         this.plugin = plugin;
@@ -41,7 +42,7 @@ public final class OctopusImpl implements Octopus {
     }
 
     @Override
-    public @NotNull List<Entry> getEntry(@NonNull String key) {;
+    public @NotNull List<Entry> getEntry(@NonNull String key) {
         return blockingStub.getEntry(EntryRequest.newBuilder().setKey(key).build()).getEntriesList();
     }
 
