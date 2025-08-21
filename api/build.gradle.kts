@@ -1,5 +1,5 @@
 dependencies {
-    api("studio.o7:octopus-sdk:0.1.2")
+    api("studio.o7:octopus-sdk:0.3.0")
 }
 
 information {

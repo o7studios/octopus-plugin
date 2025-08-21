@@ -1,15 +1,15 @@
 package studio.o7.octopus.plugin.api;
 
-import lombok.NonNull;
-import org.jetbrains.annotations.ApiStatus;
-import org.jetbrains.annotations.NotNull;
 import org.jspecify.annotations.NullMarked;
 import studio.o7.octopus.plugin.Unsafe;
+import studio.o7.octopus.plugin.api.listener.Listener;
 import studio.o7.octopus.sdk.gen.api.v1.Entry;
-import studio.o7.octopus.sdk.gen.api.v1.Event;
+import studio.o7.octopus.sdk.gen.api.v1.Object;
 
+import javax.annotation.Nullable;
+import java.time.Instant;
 import java.util.Collection;
-import java.util.List;
+import java.util.UUID;
 
 @NullMarked
 public interface Octopus {
@@ -19,37 +19,49 @@ public interface Octopus {
     }
 
     /**
-     * Returns true if event has been published successfully.
+     * Retrieves existing entries from the database matching a
+     * key pattern.
      */
-    boolean publishEvent(@NonNull Event event);
+    default Collection<Entry> get(String keyPattern) {
+        return get(keyPattern, false);
+    }
 
     /**
-     * Get entries by key, optionally filtered.
+     * Retrieves existing entries from the database matching a
+     * key pattern. Can optionally include expired objects.
      */
-    @NotNull List<Entry> getEntry(@NonNull String key);
+    default Collection<Entry> get(String keyPattern, boolean includeExpired) {
+        return get(keyPattern, includeExpired, null, null);
+    }
 
     /**
-     * Adds list of keys that should be subscribed.
+     * Retrieves existing entries from the database matching a
+     * key pattern. Can optionally include expired objects and
+     * filter by revision creation time.
      */
-    void addSubscriptions(@NonNull Collection<String> subscriptions);
+    Collection<Entry> get(String keyPattern, boolean includeExpired, @Nullable Instant createdRangeStart, @Nullable Instant createdRangeEnd);
 
 
-    /**
-     * Removes list of keys that shouldn't be subscribed.
-     */
-    void removeSubscriptions(@NonNull Collection<String> subscriptions);
+    void registerListener(Listener listener);
 
-    /**
-     * Resets list of keys that should be subscribed completely.
-     * Also resets all subscribed/unsubscribed keys
-     * which have been added by {@link Octopus#addSubscriptions}
-     * or removed by {@link Octopus#removeSubscriptions}.
-     */
-    @ApiStatus.Experimental
-    void setSubscriptions(@NonNull Collection<String> subscriptions);
+    default void unregisterListener(Listener listener) {
+        unregisterListener(listener.getListenerUniqueId());
+    }
+
+    void unregisterListener(UUID listenerUniqueId);
 
     /**
-     * Returns the identifier of this service (e.g. service-name)
+     * Stores an object on a key with new revision in the database
+     * and returns the stored version, including the new revision
+     * and ID.
      */
-    String getIdentifier();
+    Entry call(studio.o7.octopus.sdk.gen.api.v1.Object obj);
+
+    /**
+     * Stores an object on a key with new revision in the database
+     * and just forgets it. All listeners will be called
+     * as usual without blocking this method.
+     */
+    void callAndForget(Object obj);
+
 }

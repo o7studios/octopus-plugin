@@ -4,7 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import studio.o7.octopus.plugin.api.Octopus;
-import studio.o7.octopus.plugin.api.events.OctopusActionEvent;
 
 import java.util.ArrayList;
 import java.util.List;
