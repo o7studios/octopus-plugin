@@ -55,7 +55,7 @@ public interface Octopus {
      * and returns the stored version, including the new revision
      * and ID.
      */
-    Entry call(studio.o7.octopus.sdk.gen.api.v1.Object obj);
+    Entry call(Object obj);
 
     /**
      * Stores an object on a key with new revision in the database
