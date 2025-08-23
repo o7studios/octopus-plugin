@@ -52,6 +52,6 @@ jobs:
       - name: "🏗 Run JReleaser"
         uses: jreleaser/release-action@v2
         with:
-          arguments: full-release --set-version ${{ steps.version.outputs.version }}
+          arguments: full-release --set-property=project.version=${{ steps.version.outputs.version }}
         env:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
