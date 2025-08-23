@@ -49,9 +49,10 @@ jobs:
       - name: "📦 Build all shadowJARs"
         run: ./gradlew clean shadowJar
 
-      - name: "🏗 Run JReleaser"
-        uses: jreleaser/release-action@v2
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
         with:
-          arguments: full-release --set-property=project.version=${{ steps.version.outputs.version }}
-        env:
-          JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          files: |
+            api/build/libs/*.jar
+            plugin/build/libs/*.jar
+          generate_release_notes: true
