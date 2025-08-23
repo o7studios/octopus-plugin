@@ -1,0 +1,25 @@
+project:
+  name: octopus-plugin
+  description: "Paper plugin with API for wrapper around Octopus SDK for o7studios product Octopus"
+  license: GPL-3.0
+
+release:
+  github:
+    owner: o7studios
+    name: octopus-plugin
+    tagName: "{{projectVersion}}"
+    releaseName: "{{projectVersion}}"
+    changelog:
+      formatted: ALWAYS
+      preset: conventional-commits
+      links: true
+
+distributions:
+  api:
+    type: SINGLE_JAR
+    artifacts:
+      - path: api/build/libs/octopus-plugin-api-all.jar
+  plugin:
+    type: SINGLE_JAR
+    artifacts:
+      - path: plugin/build/libs/octopus-plugin-all.jar

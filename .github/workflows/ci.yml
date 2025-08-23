@@ -22,6 +22,13 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Extract version from tag
+        id: version
+        run: |
+          RAW_TAG="${GITHUB_REF_NAME}"
+          VERSION="${RAW_TAG#v}"
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
       - name: ☕ Setup Java ${{ env.JAVA_VERSION }}
         uses: actions/setup-java@v4
         with:
@@ -37,9 +44,14 @@ jobs:
           GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
           SONATYPE_USERNAME: ${{ secrets.SONATYPE_USERNAME }}
           SONATYPE_PASSWORD: ${{ secrets.SONATYPE_PASSWORD }}
-        run: |
-          RAW_TAG="${GITHUB_REF##*/}"
-          VERSION="${RAW_TAG#v}"
+        run: ./gradlew :api:publishToCentralPortal -Pversion=${{ steps.version.outputs.version }}
 
-          [[ "$VERSION" =~ ^[0-9]+(\.[0-9]+)*$ ]] || exit -1
-          ./gradlew :api:publishToCentralPortal -Pversion="$VERSION"
+      - name: "📦 Build all shadowJARs"
+        run: ./gradlew clean shadowJar
+
+      - name: "🏗 Run JReleaser"
+        uses: jreleaser/release-action@v2
+        with:
+          arguments: full-release --set-version ${{ steps.version.outputs.version }}
+        env:
+          JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
