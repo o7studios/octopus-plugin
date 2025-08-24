@@ -78,6 +78,14 @@ public final class OctopusImpl implements Octopus {
             }
         });
 
+        requestRef.set(observer);
+
+        observer.onNext(ListenMessage.newBuilder()
+                .setRegister(ListenRegister.newBuilder()
+                        .setKeyPattern(listener.getKeyPattern())
+                        .setPriority(listener.getPriority())
+                        .build()).build());
+
         this.listeners.put(listener.getListenerUniqueId(), new Pair<>() {
             @Override
             public Listener left() {
