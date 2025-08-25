@@ -58,22 +58,27 @@ public final class OctopusImpl implements Octopus {
         var observer = stub.listen(new StreamObserver<>() {
             @Override
             public void onNext(EventCall value) {
+                var request = requestRef.get();
+                if (request == null) return;
+
                 listener.onCall(value.getObject());
 
                 var msg = ListenMessage.newBuilder()
                         .setCallback(value)
                         .build();
 
-                requestRef.get().onNext(msg);
+                request.onNext(msg);
             }
 
             @Override
             public void onError(Throwable t) {
+                requestRef.set(null);
                 logger.error("Cannot call event on listener {} with key-pattern {}", listener.getListenerUniqueId(), listener.getKeyPattern(), t);
             }
 
             @Override
             public void onCompleted() {
+                requestRef.set(null);
                 listeners.remove(listener.getListenerUniqueId());
             }
         });
