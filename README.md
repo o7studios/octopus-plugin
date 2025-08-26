@@ -30,6 +30,25 @@ Please use it for being able to tell "It works on my machine".
 
 **Docker is required to be installed on your machine!**
 
+### Create ~/dev.env
+
+The development container is using a local env file on your
+host machine for reading e.g. GitHub Tokens, Usernames, Email.
+So please make sure it exists with your credentials in `~/dev.env`:
+
+```text
+GITHUB_EMAIL=your-mail@your-domain.com
+GITHUB_USERNAME=YOUR_GITHUB_USERNAME
+GITHUB_TOKEN=ghp_***
+```
+
+The `GITHUB_TOKEN` must've set following permission:
+
+- `repo`
+- `read:packages`
+- `read:user`
+- `user:email`
+
 ### IntelliJ IDEA
 
 - Open IntelliJ (Welcome screen)
