@@ -36,7 +36,7 @@ public final class OctopusImpl implements Octopus {
     }
 
     @Override
-    public Collection<Entry> get(@NonNull String keyPattern, boolean includeExpired, @Nullable Instant createdRangeStart, @Nullable Instant createdRangeEnd) {
+    public @NotNull Collection<Entry> get(@NonNull String keyPattern, boolean includeExpired, @Nullable Instant createdRangeStart, @Nullable Instant createdRangeEnd) {
         var builder = GetRequest.newBuilder();
 
         builder.setKeyPattern(keyPattern);
@@ -58,28 +58,33 @@ public final class OctopusImpl implements Octopus {
         var observer = stub.listen(new StreamObserver<>() {
             @Override
             public void onNext(EventCall value) {
-                var request = requestRef.get();
-                if (request == null) return;
+                try {
+                    var request = requestRef.get();
+                    if (request == null) return;
 
-                listener.onCall(value.getObject());
+                    listener.onCall(value.getObject());
 
-                var msg = ListenMessage.newBuilder()
-                        .setCallback(value)
-                        .build();
+                    var msg = ListenMessage.newBuilder()
+                            .setCallback(value)
+                            .build();
 
-                request.onNext(msg);
+                    request.onNext(msg);
+                } catch (Exception e) {
+                    logger.error(e.getMessage(), e);
+                }
             }
 
             @Override
             public void onError(Throwable t) {
                 requestRef.set(null);
                 logger.error("Cannot call event on listener {} with key-pattern {}", listener.getListenerUniqueId(), listener.getKeyPattern(), t);
+                unregisterListener(listener);
             }
 
             @Override
             public void onCompleted() {
                 requestRef.set(null);
-                listeners.remove(listener.getListenerUniqueId());
+                unregisterListener(listener);
             }
         });
 
