@@ -16,5 +16,8 @@
       "installGradle": true
     }
   },
+  "runArgs": [
+    "--env-file=${localEnv:HOME}/dev.env"
+  ],
   "remoteUser": "ubuntu"
 }
