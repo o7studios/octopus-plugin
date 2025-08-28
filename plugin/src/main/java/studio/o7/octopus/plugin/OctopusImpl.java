@@ -117,8 +117,11 @@ public final class OctopusImpl implements Octopus {
     @Override
     public void unregisterListener(@NonNull UUID listenerUniqueId) {
         var pair = this.listeners.get(listenerUniqueId);
-        pair.right().onCompleted();
+        if (pair == null) return;
         this.listeners.remove(listenerUniqueId);
+        var right = pair.right();
+        if (right == null) return;
+        right.onCompleted();
     }
 
     @Override
