@@ -1,7 +1,7 @@
 import studio.o7.remora.RemoraPlugin
 
 plugins {
-    id("studio.o7.remora") version "0.2.9"
+    id("studio.o7.remora") version "0.3.5"
 }
 
 allprojects {
