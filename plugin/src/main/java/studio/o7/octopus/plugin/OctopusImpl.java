@@ -5,10 +5,9 @@ import it.unimi.dsi.fastutil.Pair;
 import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import lombok.NonNull;
-import org.bukkit.plugin.Plugin;
+import lombok.extern.slf4j.Slf4j;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.slf4j.Logger;
 import studio.o7.octopus.plugin.api.Octopus;
 import studio.o7.octopus.plugin.api.listener.Listener;
 import studio.o7.octopus.plugin.observer.EmptyObserver;
@@ -22,18 +21,13 @@ import java.util.Collection;
 import java.util.UUID;
 import java.util.concurrent.atomic.AtomicReference;
 
+@Slf4j (topic = "OctopusPlugin")
 public final class OctopusImpl implements Octopus {
     private static final EmptyObserver EMPTY_OBSERVER = new EmptyObserver();
 
     private final OctopusGrpc.OctopusStub stub = OctopusSDK.stub();
     private final OctopusGrpc.OctopusBlockingStub blockingStub = OctopusSDK.blockingStub();
     private final Object2ObjectMap<UUID, Pair<Listener, StreamObserver<ListenMessage>>> listeners = new Object2ObjectArrayMap<>();
-
-    private final Logger logger;
-
-    public OctopusImpl(Plugin plugin) {
-        logger = plugin.getSLF4JLogger();
-    }
 
     @Override
     public @NotNull Collection<Entry> get(@NonNull String keyPattern, boolean includeExpired, @Nullable Instant createdRangeStart, @Nullable Instant createdRangeEnd) {
@@ -58,26 +52,27 @@ public final class OctopusImpl implements Octopus {
         var observer = stub.listen(new StreamObserver<>() {
             @Override
             public void onNext(EventCall value) {
-                try {
-                    var request = requestRef.get();
-                    if (request == null) return;
+                var start = System.currentTimeMillis();
+                var request = requestRef.get();
+                if (request == null) return;
 
-                    listener.onCall(value.getObject());
+                listener.onCall(value.getObject());
 
-                    var msg = ListenMessage.newBuilder()
-                            .setCallback(value)
-                            .build();
+                var msg = ListenMessage.newBuilder()
+                        .setCallback(value)
+                        .build();
 
-                    request.onNext(msg);
-                } catch (Exception e) {
-                    logger.error(e.getMessage(), e);
-                }
+                request = requestRef.get();
+                if (request == null) return;
+
+                request.onNext(msg);
+                log.debug("Finished EventCall `{}` in {}ms", value.getCallId(), System.currentTimeMillis() - start);
             }
 
             @Override
             public void onError(Throwable t) {
                 requestRef.set(null);
-                logger.error("Cannot call event on listener {} with key-pattern {}", listener.getListenerUniqueId(), listener.getKeyPattern(), t);
+                log.error("Cannot call event on listener {} with key-pattern {}", listener.getListenerUniqueId(), listener.getKeyPattern(), t);
                 unregisterListener(listener);
             }
 
@@ -85,6 +80,7 @@ public final class OctopusImpl implements Octopus {
             public void onCompleted() {
                 requestRef.set(null);
                 unregisterListener(listener);
+                log.debug("Completed listener `{}`", listener.getListenerUniqueId());
             }
         });
 

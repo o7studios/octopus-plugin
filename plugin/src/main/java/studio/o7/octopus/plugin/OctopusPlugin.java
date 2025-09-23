@@ -16,7 +16,7 @@ public final class OctopusPlugin extends JavaPlugin implements PluginInstance {
 
     @Override
     public void onEnable() {
-        octopus = new OctopusImpl(this);
+        octopus = new OctopusImpl();
     }
 
     @Override
