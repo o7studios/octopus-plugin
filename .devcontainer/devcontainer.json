@@ -1,23 +1,16 @@
 {
-  "name": "Octopus Plugin",
+  "name": "o7studios/octopus-plugin",
   "image": "ubuntu:latest",
   "customizations" : {
     "jetbrains" : {
       "backend" : "IntelliJ",
-      "plugins": [
-        "com.demonwav.minecraft-dev"
-      ]
+      "plugins": ["com.demonwav.minecraft-dev"]
     }
   },
   "features": {
     "ghcr.io/devcontainers/features/git" : {},
-    "ghcr.io/devcontainers/features/java:1": {
-      "version": "23",
-      "installGradle": true
-    }
+    "ghcr.io/devcontainers/features/java:1": {"version": "23", "installGradle": true}
   },
-  "runArgs": [
-    "--env-file=${localEnv:HOME}/dev.env"
-  ],
+  "runArgs": ["--env-file=${localEnv:HOME}/dev.env"],
   "remoteUser": "ubuntu"
 }
