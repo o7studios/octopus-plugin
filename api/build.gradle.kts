@@ -3,7 +3,7 @@ repositories {
 }
 
 dependencies {
-    api("studio.o7:octopus-sdk:0.3.3")
+    api("studio.o7:octopus-sdk:0.5.8")
     compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
 }
 
