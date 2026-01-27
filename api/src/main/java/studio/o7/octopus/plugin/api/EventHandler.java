@@ -7,6 +7,9 @@ import studio.o7.octopus.sdk.v1.Object;
 
 import java.util.UUID;
 
+/**
+ * Base class for event handlers that can be registered with {@link Octopus}.
+ */
 @AllArgsConstructor
 @Getter
 public abstract class EventHandler {
