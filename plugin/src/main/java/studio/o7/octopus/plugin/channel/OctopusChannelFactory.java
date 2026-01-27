@@ -43,16 +43,4 @@ public final class OctopusChannelFactory {
         c.shutdown();
         channel = null;
     }
-
-    private static String firstNonEmpty(String a, String b, String fallback) {
-        if (a != null && !a.isBlank()) return a;
-        if (b != null && !b.isBlank()) return b;
-        return fallback;
-    }
-
-    private static int parseIntOrDefault(String s) {
-        if (s == null || s.isBlank()) return 50051;
-        try { return Integer.parseInt(s.trim()); }
-        catch (Exception ignored) { return 50051; }
-    }
 }

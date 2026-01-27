@@ -10,7 +10,6 @@ import studio.o7.octopus.plugin.channel.OctopusChannelFactory;
 public final class OctopusPlugin extends JavaPlugin implements PluginInstance {
 
     private OctopusImpl octopus;
-    private String token;
 
     public OctopusPlugin() {
         Unsafe.setInstance(this);
