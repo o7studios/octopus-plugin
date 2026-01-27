@@ -1,0 +1,8 @@
+# Configuration of Octopus-Service
+octopus:
+  # Host of Octopus-gRPC Server
+  host: "127.0.0.1"
+  # Port of Octopus-gRPC Server
+  port: 50051
+  # Replace to Octopus-API token
+  token: "development"

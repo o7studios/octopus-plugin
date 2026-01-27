@@ -5,7 +5,7 @@ on:
     types: [ opened, reopened ]
 
 env:
-  JAVA_VERSION: '23'
+  JAVA_VERSION: '25'
   JAVA_DISTRIBUTION: 'temurin'
 
 permissions:
