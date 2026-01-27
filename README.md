@@ -16,53 +16,24 @@ dependencies {
 }
 ```
 
-Add _depend_ inside `plugin.yml`:
+Add _depend on_ inside `plugin.yml`:
 
 ```yaml
 depend:
   - Octopus
 ```
 
-## Development
+### Config
 
-Full development setup available as [Development Container](https://containers.dev/).
-Please use it for being able to tell "It works on my machine".
+Make sure this is inside of the `/plugins/octopus/config.yml`
 
-**Docker is required to be installed on your machine!**
-
-### Create ~/dev.env
-
-The development container is using a local env file on your
-host machine for reading e.g. GitHub Tokens, Usernames, Email.
-So please make sure it exists with your credentials in `~/dev.env`:
-
-```text
-GITHUB_EMAIL=your-mail@your-domain.com
-GITHUB_USERNAME=YOUR_GITHUB_USERNAME
-GITHUB_TOKEN=ghp_***
+```yml
+# Configuration of Octopus-Service
+octopus:
+  # Host of Octopus-gRPC Server
+  host: "127.0.0.1"
+  # Port of Octopus-gRPC Server
+  port: 50051
+  # Replace to Octopus-API token
+  token: "development"
 ```
-
-The `GITHUB_TOKEN` must've set following permission:
-
-- `repo`
-- `read:packages`
-- `read:user`
-- `user:email`
-
-### IntelliJ IDEA
-
-- Open IntelliJ (Welcome screen)
-- Navigate to `Remote Development` - `Dev Containers`
-- Press `New Dev Container`
-- Select `From VCS Project`
-- Select and connect with `Docker`
-- Select `IntelliJ IDEA`
-- Enter `Git Repository`: `https://github.com/o7studios/octopus-plugin`
-- Select `Detection for devcontainer.json file` `Automatic`
-- Press `Build Container and Continue`
-
-### Development Container Issues
-
-If you encounter an issue with setting up a development container, please
-try to rebuild it first before opening a GitHub Issue. It's not uncommon
-that some issues may fix themselves after a fresh container rebuild.
