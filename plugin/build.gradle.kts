@@ -24,7 +24,7 @@ plugin {
     enabled = true
     main = "studio.o7.octopus.plugin.OctopusPlugin"
     apiVersion = ApiVersion.PAPER_1_21_8
-    load.set(Load.POST_WORLD)
+    load.set(Load.STARTUP)
 }
 
 tasks.named<ShadowJar>("shadowJar") {
