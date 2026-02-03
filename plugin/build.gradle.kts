@@ -9,9 +9,9 @@ plugins {
 dependencies {
     implementation(project(":api"))
 
-    implementation("io.grpc:grpc-okhttp:1.78.0")
-    implementation("io.grpc:grpc-protobuf:1.78.0")
-    implementation("io.grpc:grpc-stub:1.78.0")
+    implementation("io.grpc:grpc-okhttp:1.79.0")
+    implementation("io.grpc:grpc-protobuf:1.79.0")
+    implementation("io.grpc:grpc-stub:1.79.0")
 }
 
 information {
