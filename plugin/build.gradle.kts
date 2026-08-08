@@ -3,7 +3,7 @@ import studio.o7.remora.plugin.ApiVersion
 import studio.o7.remora.plugin.Load
 
 plugins {
-    id("xyz.jpenilla.run-paper") version "3.0.2"
+    id("xyz.jpenilla.run-paper") version "3.1.0"
 }
 
 dependencies {
